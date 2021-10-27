@@ -158,7 +158,7 @@ echo $(cat pass/*.fastq.temp |wc -l)/4|bc
 | ----------------------------|:----------------------------------------------------------------------:| 
 | `echo`                      |write to standard output (the screen)                                   | 
 | `$(cat pass/*.fastq.temp`   |of all files in `pass` dir ending in .fastq.temp                        | 
-| `\|`                         |pipe output of cat to wc                                                |
+| `\|`                        |pipe output of cat to wc                                                |
 | `wc`                        |word count.                                                             |
 | `-l`.                       |lines                                                                   |
 | `/4`                        |devide number of lines by 4 (4 lines per fastq read)                    |
@@ -252,7 +252,7 @@ Examen the number of reads in each file.
 
 ## Fixing broken fastq files with Seqkit sana (optional)
 
-Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down-stream processing. [Seqkit](https://github.com/shenwei356/seqkit) is designed to help identify errors and salvage broken `.fastq` files.
+Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down-stream processing. [Seqkit](https://github.com/shenwei356/seqkit) has a tool called `sana` designed to help identify errors and salvage broken `.fastq` files.
 
 ```
 seqkit sana  GutMock1.fastq -o rescued_GutMock1.fastq
