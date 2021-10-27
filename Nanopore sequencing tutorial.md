@@ -85,7 +85,7 @@ When working with post processing basecalling it is usefull to use the `screen` 
 ```
 watch -n 10 'find . -name "*.fastq" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
 ```
-## Code Example
+### Code Example
 <details><summary>SPOILER: Click for basecalling code reveal</summary>
 <p>
 
@@ -131,7 +131,7 @@ Before starting any analysis it is often advised to check the number of reads an
 
 Count the number of fastq reads in the Guppy pass dir using `grep` and / or `wc -l`.
 
-## Code Example
+### Code Example
 <details><summary>SPOILER: Click for read counting code reveal </summary>
 <p>
 
@@ -197,7 +197,7 @@ A number of programs are available to downsample reads for onward analysis. Two 
 Try and resample 1,500 reads or 10000000 bp  no shorter than 1000bp using Filtlong and / or Canu.
 
 
-## Code Example
+### Code Example
 <details><summary>SPOILER: Click for read downsample code reveal </summary>
 <p>
   
@@ -317,7 +317,7 @@ You may wish to try running kraken2 again at a later date using a larger or more
 
 Undertake an all v all alignment using minimap2.
 
-## Code Example
+### Code Example
 <details><summary>SPOILER: Click for Minimap2 code </summary>
 <p>
 
@@ -431,6 +431,8 @@ flye --nano-hq GutMock1.fastq --meta -o flye_workshop/ -t 8
 
 Note: The assembly can now be polished with one of the formentioned programs.
 
+Undertake a kraken2 report with the assembled contigs as before
+
 ### Observations
 
 How does the fly assembly differ from the minimap2/miniasm assembly?  
@@ -438,7 +440,7 @@ How does it differ from the raw read Kraken2 report?
 
 ## Summary
 
-Long read sequencing provides a means to assemble metagenomes. Due to the length of reads, assemblies of larger complete contigs are possible relative to short, high accuracy reads. This often permits a greater understanding of community composition, genetic diversity as well as a greater resolution of the genetic context of genes of interest.  
+Long read sequencing provides a means to assemble metagenomes. Due to the length of reads, assemblies of larger complete contigs are possible relative to short, high accuracy reads. This often permits a greater understanding of community composition, genetic diversity as well as a greater resolution of the genetic context of genes of interest. Assembly and polishing reduces the false positive hit rates in a database classification approach.
 
 
 ## Extra visualisations (Cheat sheet)
