@@ -34,4 +34,15 @@ cp path/to/fast5_subset.tar.gz (currently ~rob/HU_mock/EBAME6_workshop/fast5_sub
 
 tar -xvzf fast5_subset.tar.gz
 ```
+|Flag / command            | Description               | 
+| -------------------------|:-------------------------:| 
+| `mkdir`                  |make a new directory       | 
+| `ln -s`                  |create system link to dir  | 
+| `cd`                     |change directory           |
+| `cp`                     |copy                       |
+| `tar`                    |tar and uncompress         |
+| `-x`                     |uncompress archive         |
+| `-v`                     |verbose progress           |
+| `-z`                     |using gzip                 |
+| `-f`                     |file name                  |
 
