@@ -49,7 +49,7 @@ rm fast5_subset.tar.gz
 
 
 
-Compare the different basecalling methods methods on the subset of fast5 files. 
+Compare the different basecalling methods methods on the subset of fast5 files. Only try fast and high quality, SUP-HAC is very slow on CPUs.
 
 ```
 Usage:
@@ -73,8 +73,30 @@ Try `guppy_basecaller -h` for help.
 ### Guppy fast basecalling
 
 ```
-guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --qscore_filtering --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 --flowcell FLO-MIN106 --kit SQK-LSK109 
+guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 --flowcell FLO-MIN106 --kit SQK-LSK109 -q 10 
 ```
-
+|Flag / command            | Description               | 
+| -------------------------|:-------------------------:| 
+| `guppy_basecaller`       |call guppy.                | 
+| `-r.  `                  |recursive                  | 
+| `-input_path`            |path/to/fast5/dir          |
+| `--save_path`            |path/to/fastq/output/dir   |
+| `--min_qscore`           |mean min quality score     |
+| `-cpu_threads_per_caller`|cpu threads                |
+| `-num_callers`           |parallisation              |
+| `-flowcell`              |flow cell type             |
+| `-kit`                   |kit used                   |
+| `-q`                     |reads per fastq file       |
+  
+### Guppy high accuracy basecalling
+  
+```
+guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna_r9.4.1_450bps_hac.cfg --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 --flowcell FLO-MIN106 --kit SQK-LSK109 -q 10 
+```
+|Flag / command            | Description               | 
+| -------------------------|:-------------------------:| 
+| `--config`               |High accuracy config file  |
+  
+  
 </p>
 </details>
