@@ -85,7 +85,7 @@ When working with post processing basecalling it is usefull to use the `screen` 
 ```
 watch -n 10 'find . -name "*.fastq" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
 ```
-##Code Example
+## Code Example
 <details><summary>SPOILER: Click for basecalling code reveal</summary>
 <p>
 
@@ -131,7 +131,7 @@ Before starting any analysis it is often advised to check the number of reads an
 
 Count the number of fastq reads in the Guppy pass dir using `grep` and / or `wc -l`.
 
-##Code Example
+## Code Example
 <details><summary>SPOILER: Click for read counting code reveal </summary>
 <p>
 
@@ -197,7 +197,7 @@ A number of programs are available to downsample reads for onward analysis. Two 
 Try and resample 1,500 reads or 10000000 bp  no shorter than 1000bp using Filtlong and / or Canu.
 
 
-##Code Example
+## Code Example
 <details><summary>SPOILER: Click for read downsample code reveal </summary>
 <p>
   
@@ -255,13 +255,51 @@ Examen the number of reads in each file.
 Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down stream processing. [Seqkit](https://github.com/shenwei356/seqkit) is designed to help identify errors and salvage broken `.fastq` files.
 
 ```
-
 seqkit sana  GutMock1.fastq -o rescued_GutMock1.fastq
 
 ```
 
+## Taxonomic identification using Kraken2.
+
+Kraken2 provide a means to rapidly assign taxonomic identification to reads using a k-mer based indexing against a reference database. We provide a small reference database compiled for this workshop. (ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz) Other databases such as the Loman labs [microbial-fat-free](https://lomanlab.github.io/mockcommunity/mc_databases.html) and [maxikraken](https://lomanlab.github.io/mockcommunity/mc_databases.html) are also available. Two major limitations of Kraken2 is the completeness of the database approch and the inability to accuratly derrive and estimate species abundance. Programs such as `Braken` have been developed to more accuratly estimate species abundance.
+
+### Optional extra information
+
+Custom reference databases can be created using `kraken2-build --download-library`, `--download-taxonomy` and `--build` [commands](https://ccb.jhu.edu/software/kraken2/index.shtml?t=manual#custom-databases). Mick Wattson has written [Perl scripts](https://github.com/mw55309/Kraken_db_install_scripts) to aid in customisation. An example of the creation of custom databases by the Loman lab can be found [here](http://porecamp.github.io/2017/metagenomics.html).
+
+Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the two sanitized  `GutMock*.fastq` files provided in this tutorial using the `[Insert Database name]`. 
 
 
+## Code Example
+<details><summary>SPOILER: Click for read downsample code reveal </summary>
+<p>
 
+```
+
+cd Projects/LongReads
+
+mkdir Kraken_out
+
+kraken2 --db ~/path/to/krak2db/minikraken2_v1_8GB/ --threads 8 --report Kraken_out/kraken_Gut_report --output Kraken_out/kraken_gut GutMock1.fastq 
+
+```
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `kraken2`                   |call kraken2                                                            | 
+| `--db`                      |database name flag                                                      | 
+| `--threads`                 |number of threads to use                                                |
+| `--report`                  |generate a user friendly report.txt of taxonomy                         |
+| `GutMock1.fastq`            |reads                                                                   |
+
+
+</details>
+
+Examine the Kraken report using the `more` function.
+
+```
+more Kraken_out/kraken_Gut_report 
+
+```
 
 
