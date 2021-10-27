@@ -411,3 +411,7 @@ What has happened to the number of taxa in the kraken2 report?
 How do you explain this effect?  
 
 
+## Flye assembly 
+
+The assemblers [Flye](https://github.com/fenderglass/Flye) and [Canu](https://github.com/marbl/canu) are available to perform assemblies which include error correction steps. Canu was primarily designed to assemble whole genomes from sequenced isolates and is more computationally intensive that Flye. Flye has a --meta flag with designed parameters to assemble long read metagenomes. Here we will run Flye on our raw reads.
+
