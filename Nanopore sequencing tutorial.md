@@ -67,3 +67,14 @@ List supported flowcells and kits:
 ```
 
 Try `guppy_basecaller -h` for help.
+
+<details><summary>Reveal code </summary>
+<p>
+### Guppy fast basecalling
+
+```
+guppy_basecaller   
+```
+
+</p>
+</details>
