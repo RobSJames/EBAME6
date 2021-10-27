@@ -4,7 +4,7 @@
 
 
 ### Introduction
-Today we aim to use real nanopore derived long read sequences to examen the community composition of two mock communities constructed of representitive members of the human gut microbiome.
+Today we aim to use real nanopore derived long read sequences to examen the community composition of two mock communities constructed of representative members of the human gut microbiome.
 
 ### Laboratory methods
 
@@ -46,8 +46,8 @@ rm fast5_subset.tar.gz
 | `ln -s`                  |create system link to dir  | 
 | `cd`                     |change directory           |
 | `cp`                     |copy                       |
-| `tar`                    |tar and uncompress         |
-| `-x`                     |uncompress archive         |
+| `tar`                    |tar and un-compress        |
+| `-x`                     |un-compress archive        |
 | `-v`                     |verbose progress           |
 | `-z`                     |using gzip                 |
 | `-f`                     |file name                  |
@@ -55,7 +55,7 @@ rm fast5_subset.tar.gz
 
 
 
-Compare the different basecalling methods methods on the subset of fast5 files. Only try fast and high quality, SUP-HAC is very slow on CPUs.
+Compare the different basecalling methods on the subset of fast5 files. Only try fast and high quality, SUP-HAC is very slow on CPUs.
 
 ```
 Usage:
@@ -78,7 +78,7 @@ Samples were sequenced with LSK-109 kit (ligation sequencing kit).
 
 Reads are barcoded using EXP-NBD104 kit if you wish to try demultiplexing reads (optional).
 
-When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen us `ctrl + A D`. To resume a screen use the command `screen -r`. To close a screen use `exit` within the screen environment.
+When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen, us `ctrl + A D`. To resume a screen, use the command `screen -r`. To close a screen use `exit` within the screen environment.
 
 (optional) Once detached from a screen running 'guppy_basecaller', you can count the number of reads being written in real time by changing to the `pass` directory where the fastq files are being written and implementing the following bash one-liner.
 
@@ -125,9 +125,9 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna
 How long did the different basecalling methods take to run?  
 (optional) How do the identities differ at the individual read level when using a simple blast search of NCBI databases?  
 
-## Read preperation
+## Read preparation
 
-Before starting any analysis it is often advised to check the number of reads and quality of your run. You can start by using a simple bash one liner to count all reads in `pass/`.
+Before starting any analysis, it is often advised to check the number of reads and quality of your run. You can start by using a simple bash one liner to count all reads in `pass/`.
 
 Count the number of fastq reads in the Guppy pass dir using `grep` and / or `wc -l`.
 
@@ -190,15 +190,15 @@ rm GutMocks.tar.gz
 
 Count the reads in the two fastq files.
 
-### Read downsampling (optional extra)
+### Read down sampling (optional extra)
 
-A number of programs are available to downsample reads for onward analysis. Two common used tools are [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md) and [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html), a tool within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler.
+A number of programs are available to down-sample reads for onward analysis. Two commonly used tools are [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md) and [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html), a tool within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler.
 
 Try and resample 1,500 reads or 10000000 bp  no shorter than 1000bp using Filtlong and / or Canu.
 
 
 ### Code Example
-<details><summary>SPOILER: Click for read downsample code reveal </summary>
+<details><summary>SPOILER: Click for read down-sample code reveal </summary>
 <p>
   
 ### FastqSample
@@ -224,7 +224,7 @@ Note: the file name must be `FILENAME.fastq.u.fastq` but the path must show `FIL
 
 ### FiltLong
 
-Filtlong allows greater control over readlength and average read quality weightings.
+Filtlong allows greater control over read length and average read quality weightings.
 
 ```
 
@@ -252,7 +252,7 @@ Examen the number of reads in each file.
 
 ## Fixing broken fastq files with Seqkit sana (optional)
 
-Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down stream processing. [Seqkit](https://github.com/shenwei356/seqkit) is designed to help identify errors and salvage broken `.fastq` files.
+Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down-stream processing. [Seqkit](https://github.com/shenwei356/seqkit) is designed to help identify errors and salvage broken `.fastq` files.
 
 ```
 seqkit sana  GutMock1.fastq -o rescued_GutMock1.fastq
@@ -307,7 +307,7 @@ more Kraken_out/kraken_Gut_report
 Is there anything odd in the sample?  
 Why do you think this has had positives hits in the kraken2 databases? 
 
-You may wish to try running kraken2 again at a later date using a larger or more specific database such as the minikraken2 database and see how your database can affect your results.  
+You may wish to try running kraken2 again later using a larger or more specific database such as the minikraken2 database and see how your database can affect your results.  
 
 ## Assembly minimap2/miniasm/racon
 
@@ -332,7 +332,7 @@ minimap2 -x ava-ont -t 8 GutMock1.fastq GutMock1.fastq | gzip -1 > GutMock1.paf.
 | ----------------------------|:----------------------------------------------------------------------:| 
 | `minimap2`                  |call minimap2                                                           | 
 | `-x`.                       |choose pre-tuned conditions flag                                        | 
-| `ava-ont`                   |All v All nanopore error preset                                         |
+| `ava-ont`                   |All v All nanopore error pre-set                                       |
 | `-t`                        |number of threads                                                       |
 | `GutMock1.fastq`            |reads in                                                                  |
 
@@ -429,7 +429,7 @@ flye --nano-hq GutMock1.fastq --meta -o flye_workshop/ -t 8
 | `-t`                        |number of threads                                                       |
 | `--meta`                    |metagenome assembly rules                                               |
 
-Note: The assembly can now be polished with one of the formentioned programs.
+Note: The assembly can now be polished with one of the forementioned programs.
 
 Undertake a kraken2 report with the assembled contigs as before
 
@@ -517,6 +517,3 @@ Once you have loaded your file, navigate to the "sample" tab and try interacting
 ![alt text](https://github.com/BadgerRob/Staging/blob/master/kraken.png)
 
 </details>
-
-
-
