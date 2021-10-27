@@ -123,7 +123,7 @@ How long did the different basecalling methods take to run?
 
 Before starting any analysis it is often advised to check the number of reads and quality of your run. You can start by using a simple bash one liner to count all reads in `pass/`.
 
-Count the number of fastq reads in the Guppy pass dir.
+Count the number of fastq reads in the Guppy pass dir using `grep` and / or `wc -l`.
 
 <details><summary>SPOILER: Click for read counting code reveal </summary>
 <p>
@@ -158,3 +158,14 @@ echo $(cat pass/*.fastq.temp |wc -l)/4|bc
 | `bc`                        |output via basic calculator                                             |
 
 </details>
+
+
+
+Once basecalling has completed you can create a single `.fastq` file for onward analysis by piping outputs from `cat pass/*.fastq | gzip - > workshop_fastq.gz`. However, due to the time constraints with basecalling, we have prepared a set of sanitised and down sampled fastq files for onward analysis. These reads have been base called using the super high accuracy basecaller on `Guppy5`.
+
+Copy the fastq file into a dir on our /mnt directories:
+
+```
+cd ~/Projects/LongReads
+
+cp path/to/fast5_subset.tar.gz . (currently ~rob/HU_mock/EBAME6_workshop/GutMocks.tar.gz)
