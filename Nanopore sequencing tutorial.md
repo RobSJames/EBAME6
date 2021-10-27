@@ -302,4 +302,14 @@ more Kraken_out/kraken_Gut_report
 
 ```
 
+### Observations
+
+Is there anything odd in the sample?  
+Why do you think this has had positives hits in the kraken2 databases? 
+
+You may wish to try running kraken2 again at a later date using a larger or more specific database such as the minikraken2 database and see how your database can affect your results.  
+
+
+
+
 
