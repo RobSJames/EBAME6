@@ -33,6 +33,8 @@ cd Projects/LongReads
 cp path/to/fast5_subset.tar.gz (currently ~rob/HU_mock/EBAME6_workshop/fast5_subset.tar.gz)
 
 tar -xvzf fast5_subset.tar.gz
+
+rm fast5_subset.tar.gz
 ```
 |Flag / command            | Description               | 
 | -------------------------|:-------------------------:| 
@@ -45,4 +47,7 @@ tar -xvzf fast5_subset.tar.gz
 | `-v`                     |verbose progress           |
 | `-z`                     |using gzip                 |
 | `-f`                     |file name                  |
+| `rm`                     |remove                     |
+
+
 
