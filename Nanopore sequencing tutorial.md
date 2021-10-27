@@ -69,9 +69,18 @@ List supported flowcells and kits:
 Try `guppy_basecaller -h` for help. 
 
 Samples were sequenced with LSK-109 kit (ligation sequencing kit).
+
 Reads are barcoded using EXP-NBD104 kit if you wish to try demultiplexing reads (optional).
 
-<details><summary>SPOILER: Click for code reveal </summary>
+When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen us `ctrl + A D`. To resume a screen use the command `screen -r`. To close a screen use `exit` within the screen environment.
+
+(optional) Once detached from a screen running 'guppy_basecaller', you can count the number of reads being written in real time by changing to the `pass` directory where the fastq files are being written and implementing the following bash one-liner.
+
+```
+watch -n 10 'find . -name "*.fastq" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
+```
+
+<details><summary>SPOILER: Click for basecalling code reveal </summary>
 <p>
 
 ### Guppy fast basecalling
@@ -104,3 +113,4 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna
   
 </p>
 </details>
+
