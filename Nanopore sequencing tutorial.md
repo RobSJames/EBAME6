@@ -373,11 +373,11 @@ minimap2 [options] <target.fa>|<target.idx> [query.fa] [...]
 
 ```
 
-<details><summary>SPOILER: Click for Miniasm code </summary>
+<details><summary>SPOILER: Click for minimap2 map-ont code </summary>
 <p>
   
 ```
-minimap2 -t 8 -x map-ont GutMock1.contigs.fasta GutMock1.fastq > GutMock1_reads_to_assembly.sam
+minimap2 -t 8 -ax map-ont GutMock1.contigs.fasta GutMock1.fastq > GutMock1_reads_to_assembly.sam
 
 ```
 </details>
@@ -390,7 +390,7 @@ usage: racon [options ...] <sequences> <overlaps> <target sequences>
 
 ```
 
-<details><summary>SPOILER: Click for Miniasm code </summary>
+<details><summary>SPOILER: Click for Racon code </summary>
 <p>
 
 ```
