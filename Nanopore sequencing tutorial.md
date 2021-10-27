@@ -4,9 +4,10 @@
 
 
 ### Introduction
-Today we aim to use real nanopore derived long read sequences to examen the community composition of two mock communities constructed of representative members of the human gut microbiome.
+Today we aim to use real, nanopore derived, long read sequence data to examen the community composition of two mock communities constructed of representative members of the human gut microbiome. The tutorial is designed to act as a reference for processing long reads from raw fast5 files to an assembled and taxonomically classified metagenome. While example codes for each step are provided, they are only available when reviled by clicking on the drop-down menus. This affords you the opportunity to try and implement code from the linked help pages and manuals of the tools being used. It is important to note that many other metagenomic tools and pipelines are available to assemble and undertake taxonomic classification and are likely to perform better depending on your sample, aim, time and available computational power.
 
 ### Laboratory methods
+Bacterial isolates were grown under anerobic conditions in species specific media. Strains were  
 
 ### Setup
 
