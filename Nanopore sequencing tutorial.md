@@ -415,3 +415,106 @@ How do you explain this effect?
 
 The assemblers [Flye](https://github.com/fenderglass/Flye) and [Canu](https://github.com/marbl/canu) are available to perform assemblies which include error correction steps. Canu was primarily designed to assemble whole genomes from sequenced isolates and is more computationally intensive that Flye. Flye has a --meta flag with designed parameters to assemble long read metagenomes. Here we will run Flye on our raw reads.
 
+```
+
+flye --nano-hq GutMock1.fastq --meta -o flye_workshop/ -t 8
+
+```
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `flye`                      |call  Flye                                                              | 
+| `--nano-hq`                 |using nanopore high quality raw reads as input                          | 
+| `-o`                        |output dir                                                              |
+| `-t`                        |number of threads                                                       |
+| `--meta`                    |metagenome assembly rules                                               |
+
+Note: The assembly can now be polished with one of the formentioned programs.
+
+### Observations
+
+How does the fly assembly differ from the minimap2/miniasm assembly?  
+How does it differ from the raw read Kraken2 report? 
+
+## Summary
+
+Long read sequencing provides a means to assemble metagenomes. Due to the length of reads, assemblies of larger complete contigs are possible relative to short, high accuracy reads. This often permits a greater understanding of community composition, genetic diversity as well as a greater resolution of the genetic context of genes of interest.  
+
+
+## Extra visualisations (Cheat sheet)
+
+<details><summary>SPOILER: Click for visualisation examples </summary>
+<p>
+  
+### Krona
+
+Krona produces an interactive `.html` file based on your `--report` file. While not fully integrated with kraken2, the use of the report file gives an overall approximation of your sample diversity based on individual reads. Try this on the kraken outputs from the different databases and/or basecalling modes. 
+
+Need to update taxonomy first:
+```
+cd /var/lib/miniconda3/envs/LongReads/opt/krona
+./updateTaxonomy.sh
+ 
+```
+
+```
+
+cd ~/Projects/LongReads
+
+ktImportTaxonomy -q 2 -t 3 Kraken_out/report.txt -o kraken_krona_report.html
+
+```
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `ktImportTaxonomy`          |call  KronaTools Import taxonomy                                        | 
+| `q 1 -t 3`                  |for compatibility with kraken2 output                                   | 
+| `report.txt.`               |Kraken2 report.txt file                                                 |
+| `-o`                        |HTML output                                                             |
+
+
+Copy the html files to your local machine and open in your preferred browser (tested in firefox).
+
+An example Krona output:  
+![alt text](https://github.com/BadgerRob/Staging/blob/master/Krona.png "Krona report")  
+
+### Pavian  
+
+[Pavian](https://github.com/fbreitwieser/pavian) is an R based program that is useful to produce Sankey plots and much more. It can be run on your local machine if you have R [installed](https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/installr.html). You may need to install `r-base-dev`. To set up Pavian in R on your local machine, open an R terminal and enter the following.  
+
+```
+sudo R
+
+>if (!require(remotes)) { install.packages("remotes") }
+>remotes::install_github("fbreitwieser/pavian")
+
+```
+
+To run Pavian enter into R terminal:  
+
+```
+
+>pavian::runApp(port=5000)
+
+```
+You can now access Pavian at http://127.0.0.1:5000 in a web browser if it does not load automatically.  
+
+Alternatively a shiny route is available.
+
+```
+
+shiny::runGitHub("fbreitwieser/pavian", subdir = "inst/shinyapp")
+
+```
+
+You should now be presented with a user interface to which you can browse for your report files on your local machine.  
+
+![alt text](https://github.com/BadgerRob/Staging/blob/master/pavin_snap.png "Pavian input")
+
+Once you have loaded your file, navigate to the "sample" tab and try interacting with the plot. It should look something like this:  
+
+![alt text](https://github.com/BadgerRob/Staging/blob/master/kraken.png)
+
+</details>
+
+
+
