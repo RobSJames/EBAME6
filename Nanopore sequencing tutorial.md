@@ -7,7 +7,11 @@
 Today we aim to use real, nanopore derived, long read sequence data to examen the community composition of two mock communities constructed of representative members of the human gut microbiome. The tutorial is designed to act as a reference for processing long reads from raw fast5 files to an assembled and taxonomically classified metagenome. While example codes for each step are provided, they are only available when reviled by clicking on the drop-down menus. This affords you the opportunity to try and implement code from the linked help pages and manuals of the tools being used. It is important to note that many other metagenomic tools and pipelines are available to assemble and undertake taxonomic classification and are likely to perform better depending on your sample, aim, time and available computational power.
 
 ### Laboratory methods
-Bacterial isolates were grown under anerobic conditions in species specific media. Strains were  
+Bacterial isolates were grown under anerobic conditions in species specific media. Cultures were standardised to 1 x 10^8 cells / ml via species specific calibrated optical density mesurments. Mock communities were constructed by mixing species in known proportions based on cell copy numbers / ml. 
+
+DNA was extracted from two mock communities using a resin based genomic tip (G20) extraction protocol with an enzymatic lysis and moderate bead beating. RNA was degraded using RNAseA. DNA was precipitated using room temp propan-2-ol and spooled on to a glass rod, then dissolved in 100 ul of 1 x TE buffer at 4 degrees overnight. A 1:2 dilution of DNA was quantified on a Qubit 4 using the HS kit and a 1:5 dilution was visulised on a 1% agerose gel with the Quick-Load® 1 kb Extend DNA Ladder (0.5 - 48.5 kb reference).  
+
+
 
 ### Setup
 
