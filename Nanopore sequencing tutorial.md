@@ -66,10 +66,14 @@ List supported flowcells and kits:
 
 ```
 
-Try `guppy_basecaller -h` for help.
+Try `guppy_basecaller -h` for help. 
 
-<details><summary>!!!SPOILER!!! code reveal </summary>
+Samples were sequenced with LSK-109 kit (ligation sequencing kit).
+Reads are barcoded using EXP-NBD104 kit if you wish to try demultiplexing reads (optional).
+
+<details><summary>SPOILER: Click for code reveal </summary>
 <p>
+
 ### Guppy fast basecalling
 
 ```
@@ -78,7 +82,7 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --min_qscore 7 
 |Flag / command            | Description               | 
 | -------------------------|:-------------------------:| 
 | `guppy_basecaller`       |call guppy.                | 
-| `-r.  `                  |recursive                  | 
+| `-r`                     |recursive                  | 
 | `-input_path`            |path/to/fast5/dir          |
 | `--save_path`            |path/to/fastq/output/dir   |
 | `--min_qscore`           |mean min quality score     |
