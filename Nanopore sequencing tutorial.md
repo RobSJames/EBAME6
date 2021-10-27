@@ -271,7 +271,7 @@ Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the 
 
 
 ## Code Example
-<details><summary>SPOILER: Click for read downsample code reveal </summary>
+<details><summary>SPOILER: Click for Kraken2 code </summary>
 <p>
 
 ```
@@ -309,7 +309,105 @@ Why do you think this has had positives hits in the kraken2 databases?
 
 You may wish to try running kraken2 again at a later date using a larger or more specific database such as the minikraken2 database and see how your database can affect your results.  
 
+## Assembly minimap2/miniasm/racon
+
+### Minimap2  
+
+[Minimap2](https://github.com/lh3/minimap2) is a program that has been developed to deal with mapping long and noisy raw nanopore reads. Two modes are used in the following assembly, `minimap2 -x ava-ont` and `minimap2 -x map-ont`. The former performs an exhaustive "All v ALL" pairwise alignments on the read sets to find and map overlaps between reads. The latter maps long noisy read to a reference sequence. Minimap2 was developed to replace BWA for mapping long noisy reads from both nanopore and Pac-Bio sequencing runs. 
+
+Undertake an all v all alignment using minimap2.
+
+## Code Example
+<details><summary>SPOILER: Click for Minimap2 code </summary>
+<p>
 
 
+```
+minimap2 -x ava-ont -t 8 GutMock1.fastq GutMock1.fastq | gzip -1 > GutMock1.paf.gz
+
+```
+  
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `minimap2`                  |call minimap2                                                           | 
+| `-x`.                       |choose pre-tuned conditions flag                                        | 
+| `ava-ont`                   |All v All nanopore error preset                                         |
+| `-t`                        |number of threads                                                       |
+| `GutMock1.fastq`            |reads in                                                                  |
+
+  
+Note: The output of this file is piped to gzip for a compressed pairwise alignment format (.paf.gz). 
+  
+</details>
+
+### Miniasm  
+
+[Miniasm](https://github.com/lh3/miniasm) is then used to perform an assembly using the identified overlaps in the `.paf` file. No error correction is undertaken thus the assembled contigs will have the approximate error structure of raw reads.
+
+<details><summary>SPOILER: Click for Miniasm code </summary>
+<p>
+  
+```
+miniasm -f GutMock1.fastq GutMock1.paf.gz > GutMock1.contigs.gfa
+
+```
+</details>  
+
+Miniasm produces a graphical fragment assembly (`.gfa`) file containing assembled contigs and contig overlaps. This file type can be viewed in the program `bandage` to give a visual representation of a metagenome. However, due to the error associated with this approach, read polishing can be undertaken to increase sequence accuracy. Contigs can be extracted from a `.gfa` file and stored in a `.fasta` format using the following awk command.
+
+```
+
+awk '/^S/{print ">"$2"\n"$3}' GutMock1.contigs.gfa | fold > GutMock1.contigs.fasta
+
+```
+
+## Polishing with racon
+
+Polishing a sequence refers to the process of identifying and correcting errors in a sequence based on a consensus or raw reads. Some methods use raw signal data from the fast5 files to aid in the identification and correction. A number of polishing programs are in circulation which include the gold standard [Nanopolish](https://github.com/jts/nanopolish), the ONT release [Medaka](https://github.com/nanoporetech/medaka) and the ultra-fast [Racon](https://github.com/isovic/racon). Each approach has advantages and disadvantages to their use. Nanopolish is computationally intensive but uses raw signal data contained in fast5 files to aid error correction. This also relies on the retention of the large `.fast5` files from a sequencing run. Medaka is reliable and relatively fast and racon is ultra fast but does not use raw squiggle data.  
+
+The first step in polishing an assembly is to remap the raw reads back to the assembled contigs. This is done using `minimap2 -x map-ont`.  
+
+```
+minimap2 [options] <target.fa>|<target.idx> [query.fa] [...]
+
+```
+
+<details><summary>SPOILER: Click for Miniasm code </summary>
+<p>
+  
+```
+minimap2 -t 8 -x map-ont GutMock1.contigs.fasta GutMock1.fastq > GutMock1_reads_to_assembly.sam
+
+```
+</details>
+
+
+[Racon](https://github.com/isovic/racon) is then used to polish the assembled contigs using the mapped raw reads. 
+
+```
+usage: racon [options ...] <sequences> <overlaps> <target sequences>
+
+```
+
+<details><summary>SPOILER: Click for Miniasm code </summary>
+<p>
+
+```
+
+racon -t 8 GutMock1.fastq GutMock1_reads_to_assembly.sam GutMock1.contigs.fasta > GutMock1.contigs.racon.fasta
+
+```
+
+</details>
+
+## Kraken2 contig identification
+
+kraken2 can be run on the assembled contigs in the same way as before using the polished contigs as input.
+
+### Observations
+
+What has happened to the number of taxa in the kraken2 report?  
+How do you explain this effect?  
 
 
