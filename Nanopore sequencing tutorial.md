@@ -68,7 +68,7 @@ List supported flowcells and kits:
 
 Try `guppy_basecaller -h` for help.
 
-<details><summary>Reveal code </summary>
+<details><summary>!!!SPOILER!!! code reveal </summary>
 <p>
 ### Guppy fast basecalling
 
