@@ -73,7 +73,7 @@ Try `guppy_basecaller -h` for help.
 ### Guppy fast basecalling
 
 ```
-guppy_basecaller   
+guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --qscore_filtering --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 --flowcell FLO-MIN106 --kit SQK-LSK109 
 ```
 
 </p>
