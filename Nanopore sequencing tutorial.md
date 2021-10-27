@@ -114,3 +114,47 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna
 </p>
 </details>
 
+### Observations
+
+How long did the different basecalling methods take to run?  
+(optional) How do the identities differ at the individual read level when using a simple blast search of NCBI databases?  
+
+## Read QC  
+
+Before starting any analysis it is often advised to check the number of reads and quality of your run. You can start by using a simple bash one liner to count all reads in `pass/`.
+
+Count the number of fastq reads in the Guppy pass dir.
+
+<details><summary>SPOILER: Click for read counting code reveal </summary>
+<p>
+
+```
+cat pass/*.fastq | grep 'read=' - -c
+```
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `cat`                       |display content                                                         | 
+| `pass/*.fastq`              |of all files in `pass` dir ending in .fastq                             | 
+| `\|`                         |pipe output of cat to grep                                              |
+| `grep`                      |call grep search                                                        |
+| `"read="`                   |look for lines with "read=" in                                          |
+| `-`                         |target the output from `cat`                                            |
+| `-c`                        |count                                                                   |
+
+or
+
+```
+echo $(cat pass/*.fastq.temp |wc -l)/4|bc
+```
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `echo`                      |write to standard output (the screen)                                   | 
+| `$(cat pass/*.fastq.temp`   |of all files in `pass` dir ending in .fastq.temp                        | 
+| `\|`                         |pipe output of cat to wc                                                |
+| `wc`                        |word count.                                                             |
+| `-l`.                       |lines                                                                   |
+| `/4`                        |devide number of lines by 4 (4 lines per fastq read)                    |
+| `bc`                        |output via basic calculator                                             |
+
+</details>
