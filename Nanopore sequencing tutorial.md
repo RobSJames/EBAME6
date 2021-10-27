@@ -17,6 +17,11 @@ Today we aim to use real nanopore derived long read sequences to examen the comm
 Nanopore sequencing results in fast5 files that contain raw signal data termed "squiggles". This signal needs to be processed into the `.fastq` format for onward analysis. This is undertaken through a process called 'basecalling'. The current program released for use by Oxford Nanopore is called `Guppy` and can be implemented in both GPU and CPU modes. Three forms of basecalling are available, 'fast', 'high-accuracy' (HAC) and 'super high accuracy' (SUP-HAC). The differing basecalling approaches can be undertaken directly during a sequencing run or in post by using CPU or GPU based clusters. HAC and SUP-HAC basecalling algorithms are highly computationally intensive and thus slower than the fast basecalling method. While devices such as the GridION and PromethION can basecall using these algorithms in real time due to their on-board GPU configuration, thus permitting adaptive sequencing (read-until), the MinION device relies on the computational power of the attached system on which it is running. Guppy basecaller is also able to demultiplex barcoded reads both in real time and in post processing.
 
 
+## Need to activate LongReads environment
+```
+conda activate LongReads
+```
+
 Get the fast5 reads into a dir on our /mnt directories:
 
 ```
@@ -34,6 +39,7 @@ tar -xvzf fast5_subset.tar.gz
 
 rm fast5_subset.tar.gz
 ```
+
 |Flag / command            | Description               | 
 | -------------------------|:-------------------------:| 
 | `mkdir`                  |make a new directory       | 
@@ -79,8 +85,8 @@ When working with post processing basecalling it is usefull to use the `screen` 
 ```
 watch -n 10 'find . -name "*.fastq" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
 ```
-
-<details><summary>SPOILER: Click for basecalling code reveal </summary>
+##Code Example
+<details><summary>SPOILER: Click for basecalling code reveal</summary>
 <p>
 
 ### Guppy fast basecalling
@@ -119,12 +125,13 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna
 How long did the different basecalling methods take to run?  
 (optional) How do the identities differ at the individual read level when using a simple blast search of NCBI databases?  
 
-## Read QC  
+## Read preperation
 
 Before starting any analysis it is often advised to check the number of reads and quality of your run. You can start by using a simple bash one liner to count all reads in `pass/`.
 
 Count the number of fastq reads in the Guppy pass dir using `grep` and / or `wc -l`.
 
+##Code Example
 <details><summary>SPOILER: Click for read counting code reveal </summary>
 <p>
 
@@ -161,7 +168,12 @@ echo $(cat pass/*.fastq.temp |wc -l)/4|bc
 
 
 
-Once basecalling has completed you can create a single `.fastq` file for onward analysis by piping outputs from `cat pass/*.fastq | gzip - > workshop_fastq.gz`. However, due to the time constraints with basecalling, we have prepared a set of sanitised and down sampled fastq files for onward analysis. These reads have been base called using the super high accuracy basecaller on `Guppy5`.
+Once basecalling has completed, or stopped, you can create a single `.fastq` file for onward analysis by piping outputs from 
+```
+`cat pass/*.fastq | gzip - > workshop_fastq.gz`.
+```
+
+However, due to the time constraints with basecalling, we have prepared a set of down sampled fastq files for onward analysis. These reads have been pre basecalled using the super high accuracy basecaller using `Guppy5`.
 
 Copy the fastq file into a dir on our /mnt directories:
 
@@ -169,3 +181,87 @@ Copy the fastq file into a dir on our /mnt directories:
 cd ~/Projects/LongReads
 
 cp path/to/fast5_subset.tar.gz . (currently ~rob/HU_mock/EBAME6_workshop/GutMocks.tar.gz)
+
+tar -xvzf GutMocks.tar.gz
+
+rm GutMocks.tar.gz
+
+```
+
+Count the reads in the two fastq files.
+
+### Read downsampling (optional extra)
+
+A number of programs are available to downsample reads for onward analysis. Two common used tools are [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md) and [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html), a tool within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler.
+
+Try and resample 1,500 reads or 10000000 bp  no shorter than 1000bp using Filtlong and / or Canu.
+
+
+##Code Example
+<details><summary>SPOILER: Click for read downsample code reveal </summary>
+<p>
+  
+### FastqSample
+  
+```
+cp GutMock1.fastq GutMock1.fastq.u.fastq
+
+fastqSample -U -p 150000 -m 1000 -I GutMock1.fastq -O GutMock1_reads_downsample_FS.fastq
+
+```
+
+Note: the file name must be `FILENAME.fastq.u.fastq` but the path must show `FILENAME.fastq`.  
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `-U`                        |unpaired reads used for nanopore sequencing                             | 
+| `-p`                        |total number of random reads to resample                                | 
+| `-m`                        |minimum read length to include                                          |
+| `-I`                        |path/to/input/reads.fastq                                               |
+| `-O`                        |output sampled reads                                                    |
+| `-max`                      |optional flag to sample longest reads                                   |
+  
+
+### FiltLong
+
+Filtlong allows greater control over readlength and average read quality weightings.
+
+```
+
+filtlong -t 10000000 --min_length 1000 --length_weight 3  --min_mean_q 10 GutMock1.fastq > GutMock1_reads_downsample_FL.fastq
+  
+```
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `-t`                        |target bp                                                               | 
+| `-min_length`               |minimum read length                                                     | 
+| `--length_weight 3`         |weighting towards read length                                           |
+| `--min_mean_q 10`           |minimum mean read q score                                               |
+
+
+</details>
+
+### Observations
+Examen the number of reads in each file.
+
+[Poretools](https://poretools.readthedocs.io/en/latest/content/examples.html) can be used to examine read length distribution and associated statistics. 
+
+[Seqkit stats](https://bioinf.shenwei.me/seqkit/usage/#stats) can also be used to generate simple statistics for fast* files.
+
+
+## Fixing broken fastq files with Seqkit sana (optional)
+
+Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down stream processing. [Seqkit](https://github.com/shenwei356/seqkit) is designed to help identify errors and salvage broken `.fastq` files.
+
+```
+
+seqkit sana  GutMock1.fastq -o rescued_GutMock1.fastq
+
+```
+
+
+
+
+
+
