@@ -12,6 +12,14 @@ Bacterial isolates were grown under anerobic conditions in species specific medi
 DNA was extracted from two mock communities using a resin based genomic tip (G20) extraction protocol with an enzymatic lysis and moderate bead beating. RNA was degraded using RNAseA. DNA was precipitated using room temp propan-2-ol and spooled on to a glass rod, then dissolved in 100 ul of 1 x TE buffer at 4 degrees overnight. A 1:2 dilution of DNA was quantified on a Qubit 4 using the HS kit and a 1:5 dilution was visulised on a 1% agerose gel with the Quick-Load® 1 kb Extend DNA Ladder (0.5 - 48.5 kb reference).  
 
 
+![alt text](https://github.com/RobSJames/EBAME6/blob/main/hmw%20mock.jpg)  
+_Qiagen genomic tip extraction of HMW DNA from a mock metagenome_ 
+
+Nanopore library preperation was undertaken using the NEB ultra II end prep and FFPE repair process followed by SPRI clean up and then the ligation sequencing kit (LSK109). DNA was eluted from SPRI beads using EB at 32 degrees C for 30 min.
+
+
+![alt text](https://github.com/RobSJames/EBAME6/blob/main/hmw%20spri%20recovery%20AMX.jpg)  
+_Library recovery from SPRI beads following ligation of AMII_ 
 
 ### Setup
 
