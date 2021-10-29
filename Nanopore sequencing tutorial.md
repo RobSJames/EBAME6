@@ -392,7 +392,7 @@ minimap2 [options] <target.fa>|<target.idx> [query.fa] [...]
 <p>
   
 ```
-minimap2 -t 8 -ax map-ont GutMock1.contigs.fasta GutMock1.fastq > GutMock1_reads_to_assembly.sam
+minimap2 -t 8 -ax map-ont GutMock1.contigs.fasta GutMock1.fastq > GutMock1_reads_to_polish.sam
 
 ```
 </details>
@@ -410,7 +410,7 @@ usage: racon [options ...] <sequences> <overlaps> <target sequences>
 
 ```
 
-racon -t 8 GutMock1.fastq GutMock1_reads_to_assembly.sam GutMock1.contigs.fasta > GutMock1.contigs.racon.fasta
+racon -t 8 GutMock1.fastq GutMock1_reads_to_polish.sam GutMock1.contigs.fasta > GutMock1.contigs.racon.fasta
 
 ```
 
