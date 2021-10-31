@@ -500,7 +500,7 @@ You should now be presented with a user interface to which you can browse for yo
 
 ![alt text](https://github.com/BadgerRob/Staging/blob/master/pavin_snap.png "Pavian input")
 
-Once you have loaded your file, navigate to the "sample" tab and try interacting with the plot. It should look something like this:  
+Once you have loaded your file, navigate to the "sample" tab and try interacting with the plot. This is an example of an assembled metagenome from a lambic style beer:  
 
 ![alt text](https://github.com/BadgerRob/Staging/blob/master/kraken.png)
 
