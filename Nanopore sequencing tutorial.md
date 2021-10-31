@@ -137,6 +137,13 @@ watch -n 5 'find . -name "*.fastq.temp" -exec grep 'read=' -c {} \; | paste -sd+
 How do the base calling methods compare?  
 (optional) How do the identities differ at the individual read level when using a simple blast search of NCBI databases?  
 
+## Remove raw fast5 files from Longreads/ before continuing. 
+
+```
+rm -r fast5_raw 
+
+```
+
 ## Read preparation
 
 Before starting any analysis, it is often advised to check the number of reads and quality of your run. You can start by using a simple bash one liner to count all reads in `pass/`.
@@ -180,58 +187,33 @@ echo $(cat pass/*.fastq.temp |wc -l)/4|bc
 
 
 
-Once basecalling has completed, or stopped, you can create a single `.fastq` file for onward analysis by piping outputs from 
-```
-`cat pass/*.fastq | gzip - > workshop_fastq.gz`.
-```
+Due to the time constraints with basecalling, we have prepared a set of down sampled fastq files for onward analysis. These reads have been pre basecalled using the super high accuracy basecaller using `Guppy5`.
 
-However, due to the time constraints with basecalling, we have prepared a set of down sampled fastq files for onward analysis. These reads have been pre basecalled using the super high accuracy basecaller using `Guppy5`.
-
-Copy the fastq file into a dir on our /mnt directories:
+Copy one of the two GutMock fastq files into the LongRead dir and decompress:
 
 ```
-cd ~/Projects/LongReads
+cd LongReads
 
-cp path/to/fast5_subset.tar.gz . (currently ~rob/HU_mock/EBAME6_workshop/GutMocks.tar.gz)
+cp  ../data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/GutMock1.fastq.gz 
 
-tar -xvzf GutMocks.tar.gz
+gzip -d GutMock1.fastq.gz
 
-rm GutMocks.tar.gz
+rm GutMock1.fastq.gz
 
 ```
 
-Count the reads in the two fastq files.
+Count the reads in the two fastq files using grep or wc as before.
 
-### Read down sampling (optional extra)
+### Read down sampling
 
-A number of programs are available to down-sample reads for onward analysis. Two commonly used tools are [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md) and [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html), a tool within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler.
+A number of programs are available to down-sample reads for onward analysis. A commonly used tool to downsample reads is [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md) [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html), a tool within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler Version 2.1 which has now been depreciated in Canu v2.2.
 
-Try and resample 1,500 reads or 10000000 bp  no shorter than 1000bp using Filtlong and / or Canu.
+Try and resample 1,500 reads or 10000000 bp  no shorter than 1000bp using Filtlong and / or FastqSample.
 
 
 ### Code Example
 <details><summary>SPOILER: Click for read down-sample code reveal </summary>
 <p>
-  
-### FastqSample
-  
-```
-cp GutMock1.fastq GutMock1.fastq.u.fastq
-
-fastqSample -U -p 150000 -m 1000 -I GutMock1.fastq -O GutMock1_reads_downsample_FS.fastq
-
-```
-
-Note: the file name must be `FILENAME.fastq.u.fastq` but the path must show `FILENAME.fastq`.  
-
-|Flag                         | Description                                                            | 
-| ----------------------------|:----------------------------------------------------------------------:| 
-| `-U`                        |unpaired reads used for nanopore sequencing                             | 
-| `-p`                        |total number of random reads to resample                                | 
-| `-m`                        |minimum read length to include                                          |
-| `-I`                        |path/to/input/reads.fastq                                               |
-| `-O`                        |output sampled reads                                                    |
-| `-max`                      |optional flag to sample longest reads                                   |
   
 
 ### FiltLong
@@ -252,26 +234,45 @@ filtlong -t 10000000 --min_length 1000 --length_weight 3  --min_mean_q 10 GutMoc
 | `--min_mean_q 10`           |minimum mean read q score                                               |
 
 
+### FastqSample (for reference only - not available in Canu 2.2)
+  
+```
+cp GutMock1.fastq GutMock1.fastq.u.fastq
+
+fastqSample -U -p 150000 -m 1000 -I GutMock1.fastq -O GutMock1_reads_downsample_FS.fastq
+
+```
+
+Note: When using fastqSample, the file name must be `FILENAME.fastq.u.fastq` but the path must show `FILENAME.fastq`.  
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `-U`                        |unpaired reads used for nanopore sequencing                             | 
+| `-p`                        |total number of random reads to resample                                | 
+| `-m`                        |minimum read length to include                                          |
+| `-I`                        |path/to/input/reads.fastq                                               |
+| `-O`                        |output sampled reads                                                    |
+| `-max`                      |optional flag to sample longest reads                                   |
 </details>
 
 ### Observations
-Examen the number of reads in each file.
+Examen the number of reads in each file and use seqkit to generate simple discriptive statistics for your read files. 
 
-[Poretools](https://poretools.readthedocs.io/en/latest/content/examples.html) can be used to examine read length distribution and associated statistics. 
+[Seqkit stats](https://bioinf.shenwei.me/seqkit/usage/#stats) can also be used to generate simple statistics for fasta/q files.
 
-[Seqkit stats](https://bioinf.shenwei.me/seqkit/usage/#stats) can also be used to generate simple statistics for fast* files.
+For reference, [Poretools](https://poretools.readthedocs.io/en/latest/content/examples.html) can be used to examine read length distribution and associated statistics but is not provided today. 
 
 
-## Fixing broken fastq files with Seqkit sana (optional)
+## Fixing broken fastq files with Seqkit sana
 
-Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down-stream processing. [Seqkit](https://github.com/shenwei356/seqkit) has a tool called `sana` designed to help identify errors and salvage broken `.fastq` files.
+Sometimes errors can occur when preparing a `.fastq` file for analysis. This can cause problems in down-stream processing. [Seqkit](https://github.com/shenwei356/seqkit) `sana` is designed to help identify errors and salvage broken `.fastq` files.
 
 ```
 seqkit sana  GutMock1.fastq -o rescued_GutMock1.fastq
 
 ```
 
-## Taxonomic identification using Kraken2.
+## Read based taxonomic identification using Kraken2.
 
 Kraken2 provide a means to rapidly assign taxonomic identification to reads using a k-mer based indexing against a reference database. We provide a small reference database compiled for this workshop. (ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz) Other databases such as the Loman labs [microbial-fat-free](https://lomanlab.github.io/mockcommunity/mc_databases.html) and [maxikraken](https://lomanlab.github.io/mockcommunity/mc_databases.html) are also available. Two major limitations of Kraken2 is the completeness of the database approch and the inability to accuratly derrive and estimate species abundance. Programs such as `Braken` have been developed to more accuratly estimate species abundance.
 
@@ -287,12 +288,10 @@ Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the 
 <p>
 
 ```
+mkdir ~/Longreads/Kraken_out
 
-cd Projects/LongReads
 
-mkdir Kraken_out
-
-kraken2 --db ~/path/to/krak2db/minikraken2_v1_8GB/ --threads 8 --report Kraken_out/kraken_Gut_report --output Kraken_out/kraken_gut GutMock1.fastq 
+kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB --threads 8 --use-names --report Kraken_out/kraken_Gut_report --output Kraken_out/kraken_gut GutMock1.fastq 
 
 ```
 
@@ -321,7 +320,7 @@ Why do you think this has had positives hits in the kraken2 databases?
 
 You may wish to try running kraken2 again later using a larger or more specific database such as the minikraken2 database and see how your database can affect your results.  
 
-## Assembly minimap2/miniasm/racon
+## Assembly taxonomic classification via minimap2/miniasm/racon and Kraken2
 
 ### Minimap2  
 
