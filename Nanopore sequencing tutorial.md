@@ -362,11 +362,11 @@ An example Krona output:
 ## Pavian
 [Pavian](https://github.com/fbreitwieser/pavian) is an R based program that is useful to produce Sankey plots and much more. Detailed instruction to run Pavian on your local machine are included at the end of this tutorial, however an online interface is also available at https://fbreitwieser.shinyapps.io/pavian/.
 
-Upload your kraken report and explore the tabs available.
+Use `scp` to copy your Kraken2 report file to your local machine and upload your kraken report to Pavian, then explore the tabs available.
 
 ![alt text](https://github.com/RobSJames/EBAME6/blob/main/Pavian_gut.png "Raw read sansky plot")
 
-## Assembly taxonomic classification via minimap2/miniasm and Kraken2
+## Assembly and taxonomic classification via minimap2/miniasm and Kraken2
 
 ### Minimap2  
 
