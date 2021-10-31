@@ -40,18 +40,14 @@ Nanopore sequencing results in fast5 files that contain raw signal data termed "
 conda activate LongReads
 ```
 
-Get the fast5 reads into a dir on our /mnt directories:
+Get the fast5 reads into a dir on our VM:
 
 ```
-mkdir /mnt/Projects
+mkdir LongReads
 
-ln -s /mnt/Projects ~
+cd LongReads
 
-mkdir ~/Projects/LongReads
-
-cd Projects/LongReads
-
-cp path/to/fast5_subset.tar.gz (currently ~rob/HU_mock/EBAME6_workshop/fast5_subset.tar.gz)
+cp ~/data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/fast5_subset.tar.gz .
 
 tar -xvzf fast5_subset.tar.gz
 
@@ -61,7 +57,6 @@ rm fast5_subset.tar.gz
 |Flag / command            | Description               | 
 | -------------------------|:-------------------------:| 
 | `mkdir`                  |make a new directory       | 
-| `ln -s`                  |create system link to dir  | 
 | `cd`                     |change directory           |
 | `cp`                     |copy                       |
 | `tar`                    |tar and un-compress        |
@@ -73,7 +68,7 @@ rm fast5_subset.tar.gz
 
 
 
-Compare the different basecalling methods on the subset of fast5 files. Only try fast and high quality, SUP-HAC is very slow on CPUs.
+Compare the different basecalling methods on the subset of fast5 files. Only try fast and high quality, SUP-HAC is very slow on CPUs. Basecalling will not complete in the time available, so use `ctr c` to cancel the basecalling command and examine the fastq files produced.
 
 ```
 Usage:
@@ -92,17 +87,8 @@ List supported flowcells and kits:
 
 Try `guppy_basecaller -h` for help. 
 
-Samples were sequenced with LSK-109 kit (ligation sequencing kit).
+Samples were sequenced with LSK-109 kit (ligation sequencing kit). Reads are barcoded using EXP-NBD104 kit if you wish to try demultiplexing reads (optional).
 
-Reads are barcoded using EXP-NBD104 kit if you wish to try demultiplexing reads (optional).
-
-When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen, us `ctrl + A D`. To resume a screen, use the command `screen -r`. To close a screen use `exit` within the screen environment.
-
-(optional) Once detached from a screen running 'guppy_basecaller', you can count the number of reads being written in real time by changing to the `pass` directory where the fastq files are being written and implementing the following bash one-liner.
-
-```
-watch -n 10 'find . -name "*.fastq" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
-```
 ### Code Example
 <details><summary>SPOILER: Click for basecalling code reveal</summary>
 <p>
@@ -128,7 +114,7 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --min_qscore 7 
 ### Guppy high accuracy basecalling
   
 ```
-guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna_r9.4.1_450bps_hac.cfg --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 --flowcell FLO-MIN106 --kit SQK-LSK109 -q 10 
+guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna_r9.4.1_450bps_hac.cfg --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 -q 10 
 ```
 |Flag / command            | Description               | 
 | -------------------------|:-------------------------:| 
@@ -138,9 +124,18 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna
 </p>
 </details>
 
+
+When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen, us `ctrl + A D`. To resume a screen, use the command `screen -r`. To close a screen use `exit` within the screen environment.
+
+(optional) Once detached from a screen running 'guppy_basecaller', you can count the number of reads being written in real time by changing to the `pass` directory where the fastq files are being written and implementing the following bash one-liner.
+
+```
+watch -n 10 'find . -name "*.fastq" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
+```
+
 ### Observations
 
-How long did the different basecalling methods take to run?  
+How do the base calling methods compare?  
 (optional) How do the identities differ at the individual read level when using a simple blast search of NCBI databases?  
 
 ## Read preparation
