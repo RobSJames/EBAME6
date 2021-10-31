@@ -81,7 +81,7 @@ Compare the different basecalling methods on the subset of fast5 files. Only try
 Usage:
 
 With config file:
-  guppy_basecaller -i <input path> -s <save path> -c <config file> [options]
+  guppy_basecaller -r -i <input dir> -s <save path> -c <config file> [options]
 
 With flowcell and kit name:
   guppy_basecaller -i <input path> -s <save path> --flowcell <flowcell name>
@@ -89,12 +89,16 @@ With flowcell and kit name:
 
 List supported flowcells and kits:
   guppy_basecaller --print_workflows
+  
+Fast basecalling config file: dna_r9.4.1_450bps_fast.cfg
+High accuracy config file:  dna_r9.4.1_450bps_hac.cfg
 
 ```
+Guppy can be run by specifiying kit and flowcell OR config file.
 
 Try `guppy_basecaller -h` for help. 
 
-Samples were sequenced with LSK-109 kit (ligation sequencing kit). Reads are barcoded using EXP-NBD104 kit if you wish to try demultiplexing reads (optional).
+Samples were sequenced with LSK-109 kit (ligation sequencing kit) with flow MIN 106 flowcell.
 
 ### Code Example
 <details><summary>SPOILER: Click for basecalling code reveal</summary>
@@ -133,7 +137,7 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna
 
 When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen, us `ctrl + A D`. To resume a screen, use the command `screen -r`. To close a screen use `exit` within the screen environment. `conda init` may be required to run `conda LongReads` in screen for the first use.
 
-(optional) Once detached from a screen running 'guppy_basecaller', you can count the number of reads being written in real time by changing to the `pass` directory where the fastq files are being written and implementing the following bash one-liner.
+(optional) Once detached from a screen running 'guppy_basecaller', you can count the total number of reads being written in real time by changing to the `pass` directory in the raw_fastq dir where the fastq files are being written and implementing the following bash one-liner. Use `Ctr c` to exit `watch`.
 
 ```
 watch -n 5 'find . -name "*.fastq.temp" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
@@ -142,7 +146,6 @@ watch -n 5 'find . -name "*.fastq.temp" -exec grep 'read=' -c {} \; | paste -sd+
 ### Observations
 
 How do the base calling methods compare?  
-(optional) How do the identities differ at the individual read level when using a simple blast search of NCBI databases?  
 
 ## Remove raw fast5 files from Longreads/ before continuing. 
 
@@ -155,7 +158,7 @@ rm -r fast5_raw
 
 Before starting any analysis, it is often advised to check the number of reads and quality of your run. You can start by using a simple bash one liner to count all reads in `pass/`.
 
-Count the number of fastq reads in the Guppy pass dir using `grep` and / or `wc -l`.
+Count the number of fastq reads in the Guppy pass dir.
 
 ### Code Example
 <details><summary>SPOILER: Click for read counting code reveal </summary>
@@ -170,14 +173,16 @@ cat pass/*.fastq.temp | grep 'read=' - -c
 | `pass/*.fastq`              |of all files in `pass` dir ending in .fastq                             | 
 | `\|`                        |pipe output of cat to grep                                              |
 | `grep`                      |call grep search                                                        |
-| `"read="`                   |look for lines with "read=" in                                          |
+| `"read="`                   |look for lines with the unique pattern "read=" in header                |
 | `-`                         |target the output from `cat`                                            |
 | `-c`                        |count                                                                   |
 
 or
 
 ```
-echo $(cat pass/*.fastq.temp |wc -l)/4|bc
+echo $(cat pass/*.fastq.temp | wc -l)/4|bc
+  or
+cat pass/*.fastq.temp | echo $(wc -l)/4 | bc
 ```
 
 |Flag                         | Description                                                            | 
@@ -206,13 +211,13 @@ gzip -d GutMock1.fastq.gz
 
 ```
 
-Count the reads in the two fastq files using grep or wc as before.
+Count the reads in the two fastq files using grep or wc as before. Use the command `more GutMock1.fastq` to familiarize yourself with nanopore fastq format.
 
 ### Read down sampling
 
-A number of programs are available to down-sample reads for onward analysis. A commonly used tool to downsample reads is [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md). [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html) is another tool to down sample reads that is contained within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler Version 2.1. This tool has now been depreciated in Canu v2.2.
+A number of programs are available to down-sample reads for onward analysis. A commonly used tool to downsample reads is [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md). 
 
-Try and resample 10000000 bp  no shorter than 1000bp using Filtlong and / or FastqSample.
+Try and resample 10000000 bp  no shorter than 1000bp using Filtlong with a mean quality score of 10. Filtlong outputs to STDOUT by default. Use `>` to redirect output to a file.
 
 
 ### Code Example
@@ -238,25 +243,7 @@ filtlong -t 10000000 --min_length 1000 --length_weight 3  --min_mean_q 10 GutMoc
 | `--min_mean_q 10`           |minimum mean read q score                                               |
 
 
-### FastqSample (for reference only - not available in Canu 2.2)
-  
-```
-cp GutMock1.fastq GutMock1.fastq.u.fastq
 
-fastqSample -U -p 150000 -m 1000 -I GutMock1.fastq -O GutMock1_reads_downsample_FS.fastq
-
-```
-
-Note: When using fastqSample, the file name must be `FILENAME.fastq.u.fastq` but the path must show `FILENAME.fastq`.  
-
-|Flag                         | Description                                                            | 
-| ----------------------------|:----------------------------------------------------------------------:| 
-| `-U`                        |unpaired reads used for nanopore sequencing                             | 
-| `-p`                        |total number of random reads to resample                                | 
-| `-m`                        |minimum read length to include                                          |
-| `-I`                        |path/to/input/reads.fastq                                               |
-| `-O`                        |output sampled reads                                                    |
-| `-max`                      |optional flag to sample longest reads                                   |
 </details>
 
 ### Observations
@@ -286,6 +273,10 @@ Custom reference databases can be created using `kraken2-build --download-librar
 
 Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the two `GutMock*.fastq` files provided in this tutorial using the minikraken2_v1_8GB database. 
 
+Kraken2 database is located: ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB/
+
+Kraken2 requires an `--output` flag to redirect output from STDOUT.
+
 
 ## Code Example
 <details><summary>SPOILER: Click for Kraken2 code </summary>
@@ -293,7 +284,7 @@ Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the 
 
 ```
   
-kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB --threads 8 --use-names --report kraken_report --output kraken_gut GutMock1.fastq 
+kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB/ --threads 8 --use-names --report kraken_report --output kraken_gut GutMock1.fastq 
 
 ```
 
