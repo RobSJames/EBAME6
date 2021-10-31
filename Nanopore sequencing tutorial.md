@@ -417,7 +417,7 @@ awk '/^S/{print ">"$2"\n"$3}' GutMock1.contigs.gfa | fold > GutMock1.contigs.fas
 
 ## Kraken2 contig identification
 
-kraken2 can be run on the assembled contigs in the same way as before using the polished contigs as input.
+kraken2 can be run on the assembled contigs in the same way as before using the contigs as input.
 
 ### Observations
 
@@ -442,7 +442,6 @@ flye --nano-hq GutMock1.fastq --meta -o flye_workshop/ -t 8
 | `-t`                        |number of threads                                                       |
 | `--meta`                    |metagenome assembly rules                                               |
 
-Note: The assembly can now be polished with one of the forementioned programs.
 
 Undertake a kraken2 report with the assembled contigs as before
 
@@ -460,7 +459,7 @@ Long read sequencing provides a means to assemble metagenomes. Due to the length
 You are now able to use the real human gut microbiome sample to udertake some of this tutorial at your own pace. The data set will be available for the remainder of the workshop. This data set is much more complex than the data sets provided today and has been downsampled for convenience. The data set is located in: ~/data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/real_gutDS.gz
 
 
-## Extra visualisations using sansky plots in Pavian
+## Extra visualisations using sansky plots in Pavian and polishing with Racon
 
 <details><summary>SPOILER: Click for visualisation examples </summary>
 <p>
@@ -503,5 +502,32 @@ You should now be presented with a user interface to which you can browse for yo
 Once you have loaded your file, navigate to the "sample" tab and try interacting with the plot. This is an example of an assembled metagenome from a lambic style beer:  
 
 ![alt text](https://github.com/BadgerRob/Staging/blob/master/kraken.png)
+  
+## Polishing with racon
+
+Polishing a sequence refers to the process of identifying and correcting errors in a sequence based on a consensus or raw reads. Some methods use raw signal data from the fast5 files to aid in the identification and correction. A number of polishing programs are in circulation which include the gold standard [Nanopolish](https://github.com/jts/nanopolish), the ONT release [Medaka](https://github.com/nanoporetech/medaka) and the ultra-fast [Racon](https://github.com/isovic/racon). Each approach has advantages and disadvantages to their use. Nanopolish is computationally intensive but uses raw signal data contained in fast5 files to aid error correction. This also relies on the retention of the large `.fast5` files from a sequencing run. Medaka is reliable and relatively fast and racon is ultra fast but does not use raw squiggle data.  
+
+The first step in polishing an assembly with Racon is to remap the raw reads back to the assembled contigs. This is done using `minimap2 -x map-ont`.  
+
+```
+minimap2 [options] <target.fa>|<target.idx> [query.fa] [...]
+
+
+minimap2 -t 8 -ax map-ont GutMock1.contigs.fasta GutMock1.fastq > GutMock1_reads_to_polish.sam
+
+```
+
+[Racon](https://github.com/isovic/racon) is then used to polish the assembled contigs using the mapped raw reads. 
+
+```
+usage: racon [options ...] <sequences> <overlaps> <target sequences>
+
+racon -t 8 GutMock1.fastq GutMock1_reads_to_polish.sam GutMock1.contigs.fasta > GutMock1.contigs.racon.fasta
+
+```
+
+</details>
+![image](https://user-images.githubusercontent.com/93264701/139594855-5c61d756-e989-47e7-ba90-623dd94e3b4a.png)
+
 
 </details>
