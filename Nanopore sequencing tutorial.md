@@ -348,7 +348,7 @@ ktImportTaxonomy -q 1 -t 5 kraken_report -o kraken_krona_report.html
 Copy the html files to your local machine and open in your preferred browser (tested in firefox).
 
 ```
-scp ubuntu@VMIPADDRESS:~/myLocalData/Longreads/kraken_krona_report.html Desktop
+scp ubuntu@VMIPADDRESS:~/data/mydatalocal/LongReads/kraken_krona_report.html Desktop/
 
 ```
 
