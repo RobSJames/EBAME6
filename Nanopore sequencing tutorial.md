@@ -358,8 +358,6 @@ An example Krona output:
 
 ## Assembly taxonomic classification via minimap2/miniasm and Kraken2
 
-Remove krona files from your VM before continuing with read assembly.
-
 ### Minimap2  
 
 [Minimap2](https://github.com/lh3/minimap2) is a program that has been developed to deal with mapping long and noisy raw nanopore reads. Two modes are used in the following assembly, `minimap2 -x ava-ont` and `minimap2 -x map-ont`. The former performs an exhaustive "All v ALL" pairwise alignments on the read sets to find and map overlaps between reads. The latter maps long noisy read to a reference sequence. Minimap2 was developed to replace BWA for mapping long noisy reads from both nanopore and Pac-Bio sequencing runs. 
