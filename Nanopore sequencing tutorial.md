@@ -19,7 +19,7 @@ Nanopore library preperation was undertaken using the NEB ultra II end prep and 
 
 
 ![alt text](https://github.com/RobSJames/EBAME6/blob/main/hmw%20spri%20recovery%20AMX.jpg)  
-_Library recovery from SPRI beads following ligation of AMII_ 
+_Library recovery from SPRI beads following Ultra II end prep and FFPE repair_ 
 
 Sequencing was undertaken on a single flow cell position on the GridION platform. Basecalling was undertaken in real time using the Super High Accuracy base caller from guppy5. Sequencing progressed for 24 h. 
 
