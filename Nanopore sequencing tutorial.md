@@ -158,7 +158,7 @@ Count the number of fastq reads in the Guppy pass dir using `grep` and / or `wc 
 <p>
 
 ```
-cat pass/*.fastq | grep 'read=' - -c
+cat pass/*.fastq.temp | grep 'read=' - -c
 ```
 |Flag                         | Description                                                            | 
 | ----------------------------|:----------------------------------------------------------------------:| 
@@ -196,11 +196,9 @@ Copy one of the two GutMock fastq files into the LongRead dir and decompress:
 ```
 cd LongReads
 
-cp  ../data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/GutMock1.fastq.gz 
+cp  ~/data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/GutMock1.fastq.gz .
 
 gzip -d GutMock1.fastq.gz
-
-rm GutMock1.fastq.gz
 
 ```
 
