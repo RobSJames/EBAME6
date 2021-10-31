@@ -41,7 +41,7 @@ Nanopore sequencing results in fast5 files that contain raw signal data termed "
 conda activate LongReads
 ```
 
-Get the fast5 reads into the `MyLocalData` dir on our VM:
+Get the fast5 reads into the `mydatalocal` dir on our VM:
 
 ```
 cd ~/mydatalocal
