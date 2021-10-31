@@ -339,7 +339,7 @@ ktImportTaxonomy -q 1 -t 5 gut_report -o kraken_krona_report.html
 |Flag                         | Description                                                            | 
 | ----------------------------|:----------------------------------------------------------------------:| 
 | `ktImportTaxonomy`          |call  KronaTools Import taxonomy                                        | 
-| `q 1 -t 3`                  |for compatibility with kraken2 output                                   | 
+| `q 1 -t 5`                  |for compatibility with kraken2 output abundance and taxa ID             | 
 | `report.txt.`               |Kraken2 report.txt file                                                 |
 | `-o`                        |HTML output                                                             |
 
@@ -352,7 +352,7 @@ scp ubuntu@VMIPADDRESS:~/myLocalData/Longreads/kraken_krona_report.html Desktop
 ```
 
 An example Krona output:  
-![alt text](https://github.com/BadgerRob/Staging/blob/master/Krona.png "Krona report") 
+![alt text](https://github.com/RobSJames/EBAME6/blob/main/Raw_read_kraken.png "Raw read krona report") 
 
 
 ## Assembly taxonomic classification via minimap2/miniasm and Kraken2
