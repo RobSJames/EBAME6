@@ -29,7 +29,11 @@ The tools required to undertake this tutorial are supplied in the LongReads cond
 
 ### Data 
 
+Sequencing data is located:
 ~/data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/
+
+Kraken2 database is located:
+~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB
 
 ## Tutorial
 ### Basecalling
