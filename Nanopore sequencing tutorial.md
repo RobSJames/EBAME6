@@ -293,7 +293,7 @@ Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the 
 
 ```
   
-kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB --threads 8 --report kraken_report --output kraken_gut GutMock1.fastq 
+kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB --threads 8 --use-names --report kraken_report --output kraken_gut GutMock1.fastq 
 
 ```
 
