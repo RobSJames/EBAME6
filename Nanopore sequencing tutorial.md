@@ -450,8 +450,12 @@ How does it differ from the raw read Kraken2 report?
 
 Long read sequencing provides a means to assemble metagenomes. Due to the length of reads, assemblies of larger complete contigs are possible relative to short, high accuracy reads. This often permits a greater understanding of community composition, genetic diversity as well as a greater resolution of the genetic context of genes of interest. Assembly and polishing reduces the false positive hit rates in a database classification approach.
 
+## Real gut microbiome dataset
 
-## Extra visualisations (Cheat sheet)
+You are now able to use the real human gut microbiome sample to udertake some of this tutorial at your own pace. The data set will be available for the remainder of the workshop. This data set is much larger and more complex than the data sets provided today. The data set is located in: ~/data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/real_gutDS.gz
+
+
+## Extra visualisations using sansky plots in Pavian
 
 <details><summary>SPOILER: Click for visualisation examples </summary>
 <p>
