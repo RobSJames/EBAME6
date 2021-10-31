@@ -96,7 +96,7 @@ Samples were sequenced with LSK-109 kit (ligation sequencing kit). Reads are bar
 ### Guppy fast basecalling
 
 ```
-guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 --flowcell FLO-MIN106 --kit SQK-LSK109 -q 10 
+guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --min_qscore 7 --cpu_threads_per_caller 4 --num_callers 2 --config dna_r9.4.1_450bps_fast.cfg -q 10 
 ```
 |Flag / command            | Description               | 
 | -------------------------|:-------------------------:| 
@@ -107,8 +107,7 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --min_qscore 7 
 | `--min_qscore`           |mean min quality score     |
 | `-cpu_threads_per_caller`|cpu threads                |
 | `-num_callers`           |parallisation              |
-| `-flowcell`              |flow cell type             |
-| `-kit`                   |kit used                   |
+| `--config`               |Fast config file          |
 | `-q`                     |reads per fastq file       |
   
 ### Guppy high accuracy basecalling
