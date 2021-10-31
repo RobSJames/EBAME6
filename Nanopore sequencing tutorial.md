@@ -40,9 +40,11 @@ Nanopore sequencing results in fast5 files that contain raw signal data termed "
 conda activate LongReads
 ```
 
-Get the fast5 reads into a dir on our VM:
+Get the fast5 reads into the `MyLocalData` dir on our VM:
 
 ```
+cd ~/mylocaldata
+
 mkdir LongReads
 
 cd LongReads
@@ -186,7 +188,6 @@ echo $(cat pass/*.fastq.temp |wc -l)/4|bc
 </details>
 
 
-
 Due to the time constraints with basecalling, we have prepared a set of down sampled fastq files for onward analysis. These reads have been pre basecalled using the super high accuracy basecaller using `Guppy5`.
 
 Copy one of the two GutMock fastq files into the LongRead dir and decompress:
@@ -206,9 +207,9 @@ Count the reads in the two fastq files using grep or wc as before.
 
 ### Read down sampling
 
-A number of programs are available to down-sample reads for onward analysis. A commonly used tool to downsample reads is [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md) [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html), a tool within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler Version 2.1 which has now been depreciated in Canu v2.2.
+A number of programs are available to down-sample reads for onward analysis. A commonly used tool to downsample reads is [Filtlong](https://github.com/rrwick/Filtlong/blob/main/README.md). [FastqSample](https://canu.readthedocs.io/en/stable/commands/fastqSample.html) is another tool to down sample reads that is contained within the [Canu](https://canu.readthedocs.io/en/stable/quick-start.html) assembler Version 2.1. This tool has now been depreciated in Canu v2.2.
 
-Try and resample 1,500 reads or 10000000 bp  no shorter than 1000bp using Filtlong and / or FastqSample.
+Try and resample 10000000 bp  no shorter than 1000bp using Filtlong and / or FastqSample.
 
 
 ### Code Example
@@ -274,13 +275,13 @@ seqkit sana  GutMock1.fastq -o rescued_GutMock1.fastq
 
 ## Read based taxonomic identification using Kraken2.
 
-Kraken2 provide a means to rapidly assign taxonomic identification to reads using a k-mer based indexing against a reference database. We provide a small reference database compiled for this workshop. (ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz) Other databases such as the Loman labs [microbial-fat-free](https://lomanlab.github.io/mockcommunity/mc_databases.html) and [maxikraken](https://lomanlab.github.io/mockcommunity/mc_databases.html) are also available. Two major limitations of Kraken2 is the completeness of the database approch and the inability to accuratly derrive and estimate species abundance. Programs such as `Braken` have been developed to more accuratly estimate species abundance.
+Kraken2 provide a means to rapidly assign taxonomic identification to reads using a k-mer based indexing against a reference database. We provide a small reference database compiled for this workshop. (ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken2_v2_8GB_201904_UPDATE.tgz) Other databases such as the Loman labs [microbial-fat-free](https://lomanlab.github.io/mockcommunity/mc_databases.html) and [maxikraken](https://lomanlab.github.io/mockcommunity/mc_databases.html) are also available. Two major limitations of Kraken2 is the completeness of the database approach and the inability to accuratly derrive and estimate species abundance. Tools such as [Bracken](https://github.com/jenniferlu717/Bracken) have been developed to more accuratly estimate species abundance from kraken.
 
 ### Optional extra information
 
 Custom reference databases can be created using `kraken2-build --download-library`, `--download-taxonomy` and `--build` [commands](https://ccb.jhu.edu/software/kraken2/index.shtml?t=manual#custom-databases). Mick Wattson has written [Perl scripts](https://github.com/mw55309/Kraken_db_install_scripts) to aid in customisation. An example of the creation of custom databases by the Loman lab can be found [here](http://porecamp.github.io/2017/metagenomics.html).
 
-Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the two sanitized  `GutMock*.fastq` files provided in this tutorial using the `[Insert Database name]`. 
+Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the two `GutMock*.fastq` files provided in this tutorial using the minikraken2_v1_8GB database. 
 
 
 ## Code Example
@@ -307,7 +308,7 @@ kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB -
 Examine the Kraken report using the `more` function.
 
 ```
-more Kraken2_out/kraken_Gut_report 
+more kraken_report 
 
 ```
 
@@ -316,9 +317,47 @@ more Kraken2_out/kraken_Gut_report
 Is there anything odd in the sample?  
 Why do you think this has had false positives hits in the kraken2 databases? 
 
-You may wish to try running kraken2 again later using a larger or more specific database and see how your database can affect your results.  
+You may wish to try running kraken2 again later using a larger or more specific database and see how your database can affect your results. 
 
-## Assembly taxonomic classification via minimap2/miniasm/racon and Kraken2
+### Krona read based visualization
+
+Krona produces an interactive `.html` file based on your `--report` file. While not fully integrated with kraken2, the use of the report file gives an overall approximation of your sample diversity based on individual reads. 
+
+Need to update taxonomy first, this should take 3-5 min:
+
+```
+cd /var/lib/miniconda3/envs/LongReads/opt/krona
+./updateTaxonomy.sh
+
+```
+
+```
+ktImportTaxonomy -q 2 -t 3 gut_report -o kraken_krona_report.html
+
+```
+
+|Flag                         | Description                                                            | 
+| ----------------------------|:----------------------------------------------------------------------:| 
+| `ktImportTaxonomy`          |call  KronaTools Import taxonomy                                        | 
+| `q 1 -t 3`                  |for compatibility with kraken2 output                                   | 
+| `report.txt.`               |Kraken2 report.txt file                                                 |
+| `-o`                        |HTML output                                                             |
+
+
+Copy the html files to your local machine and open in your preferred browser (tested in firefox).
+
+```
+scp ubuntu@VMIPADDRESS:~/myLocalData/Longreads/kraken_krona_report.html Desktop
+
+```
+
+An example Krona output:  
+![alt text](https://github.com/BadgerRob/Staging/blob/master/Krona.png "Krona report") 
+
+
+## Assembly taxonomic classification via minimap2/miniasm and Kraken2
+
+Remove krona files from your VM before continuing with read assembly.
 
 ### Minimap2  
 
@@ -371,53 +410,13 @@ awk '/^S/{print ">"$2"\n"$3}' GutMock1.contigs.gfa | fold > GutMock1.contigs.fas
 
 ```
 
-## Polishing with racon
-
-Polishing a sequence refers to the process of identifying and correcting errors in a sequence based on a consensus or raw reads. Some methods use raw signal data from the fast5 files to aid in the identification and correction. A number of polishing programs are in circulation which include the gold standard [Nanopolish](https://github.com/jts/nanopolish), the ONT release [Medaka](https://github.com/nanoporetech/medaka) and the ultra-fast [Racon](https://github.com/isovic/racon). Each approach has advantages and disadvantages to their use. Nanopolish is computationally intensive but uses raw signal data contained in fast5 files to aid error correction. This also relies on the retention of the large `.fast5` files from a sequencing run. Medaka is reliable and relatively fast and racon is ultra fast but does not use raw squiggle data.  
-
-The first step in polishing an assembly is to remap the raw reads back to the assembled contigs. This is done using `minimap2 -x map-ont`.  
-
-```
-minimap2 [options] <target.fa>|<target.idx> [query.fa] [...]
-
-```
-
-<details><summary>SPOILER: Click for minimap2 map-ont code </summary>
-<p>
-  
-```
-minimap2 -t 8 -ax map-ont GutMock1.contigs.fasta GutMock1.fastq > GutMock1_reads_to_polish.sam
-
-```
-</details>
-
-
-[Racon](https://github.com/isovic/racon) is then used to polish the assembled contigs using the mapped raw reads. 
-
-```
-usage: racon [options ...] <sequences> <overlaps> <target sequences>
-
-```
-
-<details><summary>SPOILER: Click for Racon code </summary>
-<p>
-
-```
-
-racon -t 8 GutMock1.fastq GutMock1_reads_to_polish.sam GutMock1.contigs.fasta > GutMock1.contigs.racon.fasta
-
-```
-
-</details>
-
 ## Kraken2 contig identification
 
 kraken2 can be run on the assembled contigs in the same way as before using the polished contigs as input.
 
 ### Observations
 
-What has happened to the number of taxa in the kraken2 report?  
-How do you explain this effect?  
+What has happened to the number of taxa in the kraken2 report?   
 
 
 ## Flye assembly 
@@ -456,37 +455,6 @@ Long read sequencing provides a means to assemble metagenomes. Due to the length
 
 <details><summary>SPOILER: Click for visualisation examples </summary>
 <p>
-  
-### Krona
-
-Krona produces an interactive `.html` file based on your `--report` file. While not fully integrated with kraken2, the use of the report file gives an overall approximation of your sample diversity based on individual reads. Try this on the kraken outputs from the different databases and/or basecalling modes. 
-
-Need to update taxonomy first, this should take 3-5 min:
-```
-cd /var/lib/miniconda3/envs/LongReads/opt/krona
-./updateTaxonomy.sh
- 
-```
-
-```
-
-cd ~/LongReads
-
-ktImportTaxonomy -q 2 -t 3 gut_report -o kraken_krona_report.html
-
-```
-|Flag                         | Description                                                            | 
-| ----------------------------|:----------------------------------------------------------------------:| 
-| `ktImportTaxonomy`          |call  KronaTools Import taxonomy                                        | 
-| `q 1 -t 3`                  |for compatibility with kraken2 output                                   | 
-| `report.txt.`               |Kraken2 report.txt file                                                 |
-| `-o`                        |HTML output                                                             |
-
-
-Copy the html files to your local machine and open in your preferred browser (tested in firefox).
-
-An example Krona output:  
-![alt text](https://github.com/BadgerRob/Staging/blob/master/Krona.png "Krona report")  
 
 ### Pavian  
 
