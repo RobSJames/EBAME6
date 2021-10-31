@@ -331,7 +331,7 @@ cd /var/lib/miniconda3/envs/LongReads/opt/krona
 ```
 
 ```
-cd ~//data/mydatalocal/LongReads
+cd ~/data/mydatalocal/LongReads
 
 ktImportTaxonomy -q 1 -t 5 gut_report -o kraken_krona_report.html
 
