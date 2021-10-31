@@ -461,7 +461,7 @@ Long read sequencing provides a means to assemble metagenomes. Due to the length
 
 Krona produces an interactive `.html` file based on your `--report` file. While not fully integrated with kraken2, the use of the report file gives an overall approximation of your sample diversity based on individual reads. Try this on the kraken outputs from the different databases and/or basecalling modes. 
 
-Need to update taxonomy first:
+Need to update taxonomy first, this should take 3-5 min:
 ```
 cd /var/lib/miniconda3/envs/LongReads/opt/krona
 ./updateTaxonomy.sh
@@ -470,7 +470,7 @@ cd /var/lib/miniconda3/envs/LongReads/opt/krona
 
 ```
 
-cd ~/Projects/LongReads
+cd ~/LongReads
 
 ktImportTaxonomy -q 2 -t 3 gut_report -o kraken_krona_report.html
 
