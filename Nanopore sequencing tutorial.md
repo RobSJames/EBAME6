@@ -451,7 +451,7 @@ Long read sequencing provides a means to assemble metagenomes. Due to the length
 
 ## Real gut microbiome dataset
 
-You are now able to use the real human gut microbiome sample to udertake some of this tutorial at your own pace. The data set will be available for the remainder of the workshop. This data set is much larger and more complex than the data sets provided today. The data set is located in: ~/data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/real_gutDS.gz
+You are now able to use the real human gut microbiome sample to udertake some of this tutorial at your own pace. The data set will be available for the remainder of the workshop. This data set is much more complex than the data sets provided today and has been downsampled for convenience. The data set is located in: ~/data/public/teachdata/ebame/Quince-data-2021/Quince_datasets/Rob_data/real_gutDS.gz
 
 
 ## Extra visualisations using sansky plots in Pavian
