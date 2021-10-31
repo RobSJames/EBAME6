@@ -461,7 +461,9 @@ You are now able to use the real human gut microbiome sample to udertake some of
 
 ### Pavian  
 
-[Pavian](https://github.com/fbreitwieser/pavian) is an R based program that is useful to produce Sankey plots and much more. It can be run on your local machine if you have R [installed](https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/installr.html). You may need to install `r-base-dev`. To set up Pavian in R on your local machine, open an R terminal and enter the following.  
+[Pavian](https://github.com/fbreitwieser/pavian) is an R based program that is useful to produce Sankey plots and much more. It can be run on your local machine if you have R [installed](https://a-little-book-of-r-for-bioinformatics.readthedocs.io/en/latest/src/installr.html) or can be run online at https://fbreitwieser.shinyapps.io/pavian/. Upload your kraken2 reports to interact with them.
+  
+You may need to install `r-base-dev` To set up Pavian in R on your local machine, open an R terminal and enter the following.  
 
 ```
 sudo R
