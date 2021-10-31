@@ -44,7 +44,7 @@ conda activate LongReads
 Get the fast5 reads into the `MyLocalData` dir on our VM:
 
 ```
-cd ~/mylocaldata
+cd ~/mydatalocal
 
 mkdir LongReads
 
