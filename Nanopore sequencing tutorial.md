@@ -68,7 +68,7 @@ rm fast5_subset.tar.gz
 
 
 
-Compare the different basecalling methods on the subset of fast5 files. Only try fast and high quality, SUP-HAC is very slow on CPUs. Basecalling will not complete in the time available, so use `ctr c` to cancel the basecalling command and examine the fastq files produced.
+Compare the different basecalling methods on the subset of fast5 files. Only try fast and high quality, SUP-HAC is very slow on CPUs. Basecalling will not complete in the time available, examine the fastq.temp files produced. Config files must be specified or kit and flow cell can be specified without a config file.
 
 ```
 Usage:
@@ -107,8 +107,8 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq --min_qscore 7 
 | `--min_qscore`           |mean min quality score     |
 | `-cpu_threads_per_caller`|cpu threads                |
 | `-num_callers`           |parallisation              |
-| `--config`               |Fast config file          |
-| `-q`                     |reads per fastq file       |
+| `--config`               |Fast config file           |
+| `-q 10`                  |10 reads per fastq file    |
   
 ### Guppy high accuracy basecalling
   
@@ -124,7 +124,7 @@ guppy_basecaller -r --input_path fast5_raw --save_path raw_fastq_HQ --config dna
 </details>
 
 
-When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen, us `ctrl + A D`. To resume a screen, use the command `screen -r`. To close a screen use `exit` within the screen environment.
+When working with post processing basecalling it is usefull to use the `screen` command. This allows you to run the command in the background by detaching from the current process. To detach from a screen, us `ctrl + A D`. To resume a screen, use the command `screen -r`. To close a screen use `exit` within the screen environment. `conda init` may be required to run `conda LongReads` in screen for the first use.
 
 (optional) Once detached from a screen running 'guppy_basecaller', you can count the number of reads being written in real time by changing to the `pass` directory where the fastq files are being written and implementing the following bash one-liner.
 
