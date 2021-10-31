@@ -355,6 +355,12 @@ scp ubuntu@VMIPADDRESS:~/data/mydatalocal/LongReads/kraken_krona_report.html Des
 An example Krona output:  
 ![alt text](https://github.com/RobSJames/EBAME6/blob/main/Raw_read_kraken.png "Raw read krona report") 
 
+## Pavian
+[Pavian](https://github.com/fbreitwieser/pavian) is an R based program that is useful to produce Sankey plots and much more. Detailed instruction to run Pavian on your local machine are included at the end of this tutorial, however an online interface is also available at https://fbreitwieser.shinyapps.io/pavian/.
+
+Upload your kraken report and explore the tabs available.
+
+
 
 ## Assembly taxonomic classification via minimap2/miniasm and Kraken2
 
