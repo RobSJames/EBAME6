@@ -527,7 +527,3 @@ racon -t 8 GutMock1.fastq GutMock1_reads_to_polish.sam GutMock1.contigs.fasta > 
 ```
 
 </details>
-![image](https://user-images.githubusercontent.com/93264701/139594855-5c61d756-e989-47e7-ba90-623dd94e3b4a.png)
-
-
-</details>
