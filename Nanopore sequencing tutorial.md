@@ -130,7 +130,7 @@ When working with post processing basecalling it is usefull to use the `screen` 
 (optional) Once detached from a screen running 'guppy_basecaller', you can count the number of reads being written in real time by changing to the `pass` directory where the fastq files are being written and implementing the following bash one-liner.
 
 ```
-watch -n 10 'find . -name "*.fastq" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
+watch -n 10 'find . -name "*.fastq.temp" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
 ```
 
 ### Observations
