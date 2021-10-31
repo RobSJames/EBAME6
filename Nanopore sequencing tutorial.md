@@ -360,7 +360,7 @@ An example Krona output:
 
 Upload your kraken report and explore the tabs available.
 
-
+![alt text](https://github.com/RobSJames/EBAME6/blob/main/Pavian_gut.png "Raw read sansky plot")
 
 ## Assembly taxonomic classification via minimap2/miniasm and Kraken2
 
