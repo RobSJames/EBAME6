@@ -288,10 +288,8 @@ Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the 
 <p>
 
 ```
-mkdir ~/Longreads/Kraken_out
-
-
-kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB --threads 8 --use-names --report Kraken_out/kraken_Gut_report --output Kraken_out/kraken_gut GutMock1.fastq 
+  
+kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB --threads 8 --report kraken_report --output kraken_gut GutMock1.fastq 
 
 ```
 
@@ -309,16 +307,16 @@ kraken2 --db ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB -
 Examine the Kraken report using the `more` function.
 
 ```
-more Kraken_out/kraken_Gut_report 
+more Kraken2_out/kraken_Gut_report 
 
 ```
 
 ### Observations
 
 Is there anything odd in the sample?  
-Why do you think this has had positives hits in the kraken2 databases? 
+Why do you think this has had false positives hits in the kraken2 databases? 
 
-You may wish to try running kraken2 again later using a larger or more specific database such as the minikraken2 database and see how your database can affect your results.  
+You may wish to try running kraken2 again later using a larger or more specific database and see how your database can affect your results.  
 
 ## Assembly taxonomic classification via minimap2/miniasm/racon and Kraken2
 
@@ -424,7 +422,7 @@ How do you explain this effect?
 
 ## Flye assembly 
 
-The assemblers [Flye](https://github.com/fenderglass/Flye) and [Canu](https://github.com/marbl/canu) are available to perform assemblies which include error correction steps. Canu was primarily designed to assemble whole genomes from sequenced isolates and is more computationally intensive that Flye. Flye has a --meta flag with designed parameters to assemble long read metagenomes. Here we will run Flye on our raw reads.
+The assemblers [Flye](https://github.com/fenderglass/Flye) and [Canu](https://github.com/marbl/canu) are available to perform assemblies which include error correction steps. Canu was primarily designed to assemble whole genomes from sequenced isolates and is more computationally intensive that Flye. Flye has a --meta flag with designed parameters to assemble long read metagenomes. Here we will run Flye on our raw reads, you will need to down sample your reads for flye to complete an assembly within the time constraints of this tutorial.
 
 ```
 
@@ -474,7 +472,7 @@ cd /var/lib/miniconda3/envs/LongReads/opt/krona
 
 cd ~/Projects/LongReads
 
-ktImportTaxonomy -q 2 -t 3 Kraken_out/report.txt -o kraken_krona_report.html
+ktImportTaxonomy -q 2 -t 3 gut_report -o kraken_krona_report.html
 
 ```
 |Flag                         | Description                                                            | 
