@@ -45,6 +45,8 @@ Nanopore sequencing results in fast5 files that contain raw signal data termed "
 conda activate LongReads
 ```
 
+It is important to store all data and outputs in directories contained within the mounted volume in `~/mydatalocal` to insure you do not run out of space on your VMs.
+
 Get the fast5 reads into the `mydatalocal` dir on our VM:
 
 ```
