@@ -85,15 +85,16 @@ Usage:
 With config file:
   guppy_basecaller -r -i <input dir> -s <save path> -c <config file> [options]
 
+Fast basecalling config file: dna_r9.4.1_450bps_fast.cfg
+High accuracy config file:  dna_r9.4.1_450bps_hac.cfg
+
 With flowcell and kit name:
   guppy_basecaller -i <input path> -s <save path> --flowcell <flowcell name>
     --kit <kit name>
 
 List supported flowcells and kits:
   guppy_basecaller --print_workflows
-  
-Fast basecalling config file: dna_r9.4.1_450bps_fast.cfg
-High accuracy config file:  dna_r9.4.1_450bps_hac.cfg
+ 
 
 ```
 Guppy can be run by specifiying kit and flowcell OR config file.
@@ -144,6 +145,8 @@ When working with post processing basecalling it is usefull to use the `screen` 
 ```
 watch -n 5 'find . -name "*.fastq.temp" -exec grep 'read=' -c {} \; | paste -sd+ | bc'
 ```
+
+Cancel the Guppy_basecaller command before continuing.
 
 ### Observations
 
@@ -202,7 +205,7 @@ cat pass/*.fastq.temp | echo $(wc -l)/4 | bc
 
 Due to the time constraints with basecalling, we have prepared a set of down sampled fastq files for onward analysis. These reads have been pre basecalled using the super high accuracy basecaller using `Guppy5`.
 
-Copy one of the two GutMock fastq files into the LongRead dir and decompress:
+Copy one of the two GutMock fastq files into the LongReads dir and decompress:
 
 ```
 cd LongReads
