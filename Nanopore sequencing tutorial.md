@@ -345,7 +345,7 @@ ktImportTaxonomy -q 1 -t 5 kraken_report -o kraken_krona_report.html
 | `-o`                        |HTML output                                                             |
 
 
-Copy the html files to your local machine and open in your preferred browser (tested in firefox).
+Copy the html files to your local machine and open in your preferred browser (tested in firefox). To do this, open a new terminal on your machine and use the following command. Replace VMIPADDRESS with your own VM IP.
 
 ```
 scp ubuntu@VMIPADDRESS:~/data/mydatalocal/LongReads/kraken_krona_report.html Desktop/
