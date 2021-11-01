@@ -276,7 +276,7 @@ Kraken2 provide a means to rapidly assign taxonomic identification to reads usin
 
 Custom reference databases can be created using `kraken2-build --download-library`, `--download-taxonomy` and `--build` [commands](https://ccb.jhu.edu/software/kraken2/index.shtml?t=manual#custom-databases). Mick Wattson has written [Perl scripts](https://github.com/mw55309/Kraken_db_install_scripts) to aid in customisation. An example of the creation of custom databases by the Loman lab can be found [here](http://porecamp.github.io/2017/metagenomics.html).
 
-Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the two `GutMock*.fastq` files provided in this tutorial using the minikraken2_v1_8GB database. 
+Run [kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual) on one of the two `GutMock1.fastq` files provided in this tutorial using the minikraken2_v1_8GB database. 
 
 Kraken2 database is located: ~/data/public/teachdata/ebame/Quince-data-2021/minikraken2_v1_8GB/
 
